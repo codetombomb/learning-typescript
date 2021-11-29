@@ -37,7 +37,7 @@ class GameObject {
     }
 
     shoeSize(playerName: string): number {
-        let shoe = 0;
+        let shoe: number = 0;
         if (!this.allPlayers()[playerName]) throw new Error("Player not found")
         for (const player in this.allPlayers()) {
             if (player === playerName) {
@@ -45,6 +45,70 @@ class GameObject {
             }
         }
         return shoe;
+    }
+
+    teamColors(teamName: string): string[] {
+        return this.home.teamName === teamName ? this.home.colors : this.away.colors
+    }
+
+    playerNumbers(teamName: string): number[] {
+        let result: number[] = []
+        let team = this.home.teamName === teamName ? this.home.players : this.away.players
+        for (const player in team) {
+            result.push(team[player].number)
+        }
+        return result
+    }
+
+    playerStats(playerName: string): object {
+        return this.allPlayers()[playerName]
+    }
+
+    // Build a function, `bigShoeRebounds`, that will return the number of rebounds
+    // associated with the player that has the largest shoe size
+
+
+    bigShoeRebounds(): number {
+        let big: {
+            name: string;
+            player: {
+                number: number;
+                shoe: number;
+                points: number;
+                rebounds: number;
+                assists: number;
+                steals: number;
+                blocks: number;
+                slamDunks: number;
+            };
+            shoe: number;
+        } = {
+            name: '',
+            player: {
+                number: 0,
+                shoe: 0,
+                points: 0,
+                rebounds: 0,
+                assists: 0,
+                steals: 0,
+                blocks: 0,
+                slamDunks: 0
+            },
+            shoe: 0
+        };
+        for (const playerName in this.allPlayers()) {
+            if (big.shoe < this.allPlayers()[playerName].shoe) {
+                big.name = playerName;
+                big.player = { ...this.allPlayers()[playerName] };
+                big.shoe = this.allPlayers()[playerName].shoe;
+            }
+
+        }
+        return big.player.rebounds;
+    }
+
+    mostPointsScored(){
+        
     }
 
 
