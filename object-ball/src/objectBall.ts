@@ -72,43 +72,39 @@ class GameObject {
         let big: {
             name: string;
             player: {
-                number: number;
                 shoe: number;
-                points: number;
                 rebounds: number;
-                assists: number;
-                steals: number;
-                blocks: number;
-                slamDunks: number;
             };
-            shoe: number;
         } = {
             name: '',
             player: {
-                number: 0,
                 shoe: 0,
-                points: 0,
                 rebounds: 0,
-                assists: 0,
-                steals: 0,
-                blocks: 0,
-                slamDunks: 0
             },
-            shoe: 0
         };
         for (const playerName in this.allPlayers()) {
-            if (big.shoe < this.allPlayers()[playerName].shoe) {
+            if (big.player.shoe < this.allPlayers()[playerName].shoe) {
                 big.name = playerName;
                 big.player = { ...this.allPlayers()[playerName] };
-                big.shoe = this.allPlayers()[playerName].shoe;
             }
 
         }
         return big.player.rebounds;
     }
 
-    mostPointsScored(){
-        
+    // Which player has the most points?
+    mostPointsScored() {
+        let mostPoints: {
+            scored: number;
+            player: any []
+        } = { scored: 0, player: [] }
+        Object.entries(this.allPlayers()).forEach((player) => {
+            if (player[1].points > mostPoints.scored) {
+                mostPoints.scored = player[1].points;
+                mostPoints.player = player;
+            }
+        })
+        return mostPoints.player
     }
 
 
