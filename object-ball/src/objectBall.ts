@@ -21,10 +21,6 @@ class GameObject {
         this.away = away;
     }
 
-    allPlayers() {
-        return { ...this.home.players, ...this.away.players };
-    }
-
     numPointsScored(playerName: string): number {
         let points: number = 0;
         if (!this.allPlayers()[playerName]) throw new Error("Player not found")
@@ -64,10 +60,6 @@ class GameObject {
         return this.allPlayers()[playerName]
     }
 
-    // Build a function, `bigShoeRebounds`, that will return the number of rebounds
-    // associated with the player that has the largest shoe size
-
-
     bigShoeRebounds(): number {
         let big: {
             name: string;
@@ -92,19 +84,40 @@ class GameObject {
         return big.player.rebounds;
     }
 
-    // Which player has the most points?
-    mostPointsScored() {
+    mostPointsScored(): any[]{
         let mostPoints: {
             scored: number;
             player: any []
         } = { scored: 0, player: [] }
-        Object.entries(this.allPlayers()).forEach((player) => {
+        Object.entries(this.allPlayers()).forEach((player: any[]) => {
             if (player[1].points > mostPoints.scored) {
                 mostPoints.scored = player[1].points;
                 mostPoints.player = player;
             }
         })
         return mostPoints.player
+    }
+
+    winningTeam(): string{
+      return this.addTeamPoints(this.home.players) > this.addTeamPoints(this.away.players) ? "Home" : "Away"
+    }
+
+    playerWithLongestName(): string {
+        return Object.keys(this.allPlayers()).reduce((previous: string, player: string) => {
+                return previous.length > player.length ? previous : player
+            }
+        );
+    }
+
+    //Helpers
+    allPlayers() {
+        return { ...this.home.players, ...this.away.players };
+    }
+
+    addTeamPoints(team: {}){
+        return Object.entries(team).map((player: any[]) => {
+            return player[1].points
+        }).reduce((points, current) => points + current, 0)
     }
 
 
